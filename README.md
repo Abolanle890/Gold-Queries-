@@ -138,7 +138,6 @@ FROM dim_products
 ORDER BY 1,2,3;
 
 ## -- Find the date of the first and last order --
-## -- How many years of sales are available --
 
 SELECT 
 MIN(order_date) AS first_order_date,
