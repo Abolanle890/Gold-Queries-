@@ -1,4 +1,4 @@
-# Gold Retail Sales Analysis: Building a MySQL Data Warehouse to Generate Business Insights
+# Gold Retail Sales Analysis: Business Insights with MySQL
 
 A business-focused SQL analysis project simulating a real-world retail sales environment. This project demonstrates how to structure and query transactional and dimensional data to generate actionable insights for decision-making.
 
