@@ -9,6 +9,23 @@ The goal is to extract business intelligence from retail sales data using MySQL:
 - Analyze customer behavior and distribution for targeted sales strategies
 - Practice data modeling and advanced SQL queries in a realistic retail scenario
 
+## Insight:
+
+1. Revenue is highly concentrated ($6.67M) in the Mountain-200 product line, indicating strong demand but exposing the business to concentration risk, making both optimisation and diversification critical.
+
+2. Revenue is highly concentrated ($6.67M) in the Mountain-200 product line, indicating strong demand but exposing the business to concentration risk, making both optimisation and diversification critical.
+
+3. The top 10 customers generated ₦132,023 in revenue, contributing only 0.41% of total sales, while the remaining customer base accounted for 99.59% of revenue.
+
+Revenue is highly distributed across the customer base, with no significant dependence on a small group of high-value customers.
+
+4. Customers from the United States generated ₦9.16M in revenue, accounting for 28.27% of total sales, making it the strongest performing market. Australia closely follows with ₦9.06M (27.95%), while the UK contributes ₦3.39M (10.47%), indicating a sharp revenue drop after the top two markets. A small portion of revenue (0.70%) is associated with undefined country data (n/a), indicating a need for improved customer location data capture.
+
+Recommendations:
+- Focus growth efforts on mid-tier markets such as the UK through targeted campaigns, while sustaining performance in core regions.
+- Reduce dependency on the Bikes category by reviewing pricing, availability, and positioning of underperforming categories, and introduce bundling strategies to drive incremental revenue.
+- While customer revenue is broadly distributed, overall performance depends on a narrow set of products and one category.
+
 ## Dataset Overview
 Dataset	Description
 - dim_customers.csv	
@@ -32,7 +49,6 @@ Stores product and category details for performance tracking
 - fact_sales;
 
 Core transactional table for revenue and sales metrics
-
 
 ## Technologies & Techniques
 MySQL 8.0 — relational database management
@@ -74,8 +90,3 @@ Total products sold per category and revenue per category
 Average product cost vs. selling price to evaluate profitability
 
 Insights into category-level performance trends for inventory planning
-
-Example Insight:
-
-The top 5 products generate over 60% of total revenue, highlighting critical revenue drivers. Customers in Country X contribute the highest sales, revealing a key market segment for targeted campaigns.
-
