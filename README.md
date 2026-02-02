@@ -1,286 +1,81 @@
-# Gold-Queries
+# Gold Retail Sales Analysis: Building a MySQL Data Warehouse to Generate Business Insights
 
-# 🛒Gold Retail Sales Analysis with MySQL
+A business-focused SQL analysis project simulating a real-world retail sales environment. This project demonstrates how to structure and query transactional and dimensional data to generate actionable insights for decision-making.
 
-This project is a complete SQL-based data analysis pipeline that simulates a real-world sales database environment. It utilizes MySQL to load raw CSV data into dimension and fact tables, and then executes a set of business-focused queries to extract meaningful insights.
+## Project Objective
+The goal is to extract business intelligence from retail sales data using MySQL:
+- Compute key performance metrics: revenue, product performance, and customer trends
+- Identify top-performing products and categories to guide inventory and marketing decisions
+- Analyze customer behavior and distribution for targeted sales strategies
+- Practice data modeling and advanced SQL queries in a realistic retail scenario
 
-## 📁 Datasets Used
-CSV files include:
-- `dim_customers.csv`
-- `dim_products.csv`
-- `fact_sales.csv`
+## Dataset Overview
+Dataset	Description
+- dim_customers.csv	
 
-## 🗃️ Tables Created
-- `dim_customers`: Contains customer demographic details
-- `dim_products`: Contains product-related info such as category, cost, and product line
-- `fact_sales`: The core sales transactions table with quantities, dates, and revenue
+Customer demographics: name, gender, country, birthdate
+- dim_products.csv
+   
+Product details: category, cost, product line, subcategory
+- fact_sales.csv
 
-## 🚀 Objective
-The aim is to simulate a real-world retail data warehouse setup where we:
-1. Load structured CSV data into MySQL
-2. Clean and query the data using SQL
-3. Extract business intelligence (BI) metrics
-4. Practice schema design and data storytelling
+Sales transactions: quantity, price, revenue, order/shipping dates
 
-## 🛠️ Technologies
-- MySQL 8.0
-- SQL (DDL & DML)
-- CSV files (manually prepared)
-- Windows local file system for loading
+## Tables Created
+Table
+- dim_customers;
 
-## -- LOAD DATA
-LOAD DATA INFILE 'C:\Users\HomePC\Documents\ABOLANLE\sql-data-analytics-project\datasets\csv-files/to/gold.dim_customers.csv'
-INTO TABLE gold.dim_customers
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 ROWS;
+Stores customer profiles for segmentation and behavioral analysis
+- dim_products;
 
-- SHOW VARIABLES LIKE 'secure_file_priv';
+Stores product and category details for performance tracking
+- fact_sales;
 
-- SET sql_mode = '';
-
-## -- CREATE TABLE
-
-CREATE TABLE dim_customers (
-    customer_key INT PRIMARY KEY,
-    customer_id INT,
-    customer_number VARCHAR(20), 
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    country VARCHAR(50),
-    marital_status VARCHAR(20),
-    gender VARCHAR(10),
-    birthdate DATE,
-    create_date DATETIME
-);
-
-## -- LOAD DATA
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/gold.dim_customers.csv'
-INTO TABLE dim_customers
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 ROWS;
-
-- SELECT * FROM dim_customers;
-
-## -- CREATE TABLE 
-CREATE TABLE dim_products (
-    product_key INT PRIMARY KEY,
-    product_id INT,
-    product_number VARCHAR(20), 
-	product_name VARCHAR(50),
-    category_id VARCHAR(50),
-    category VARCHAR(50),
-    subcategory VARCHAR(20),
-    maintenance VARCHAR(10),
-    cost INT,
-    product_line VARCHAR(20),
-    start_date DATETIME
-);
-
-- SET sql_mode = '';
-
-## -- LOAD DATA 
-
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/gold.dim_products.csv'
-INTO TABLE dim_products
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 ROWS;
+Core transactional table for revenue and sales metrics
 
 
-## -- CREATE TABLE
-CREATE TABLE fact_sales (
-	order_number VARCHAR (50),
-	product_key INT,
-	customer_key INT,
-	order_date DATETIME,
-	shipping_date DATETIME,
-	due_date DATETIME,
-	sales_amount INT,
-	quantity INT,
-	price INT
-);
+## Technologies & Techniques
+MySQL 8.0 — relational database management
 
-- SET sql_mode = '';
+SQL (DDL, DML, joins, aggregation, window functions)
 
-## -- LOAD DATA
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/gold.fact_sales.csv'
-INTO TABLE fact_sales
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 ROWS;
+CSV files for raw data ingestion
 
-## -- Expore all table--
-SELECT * FROM INFORMATION_SCHEMA.TABLES;
+Data modeling for dimension/fact schema
 
-## -- Explore all columns --
-SELECT * FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME = 'dim_customers';
+Analytical queries to generate business insights
 
-## -- Explore all countries our customer come from --
+Full SQL scripts are available in the sql/ folder
 
-SELECT DISTINCT 
-country 
-FROM dim_customers;
+## Key Business Insights
 
-## -- Explore all category "The Major Division" --
+The analysis focuses on actionable metrics and business outcomes:
 
-SELECT DISTINCT 
-category,
-subcategory,
-product_id
-FROM dim_products
-ORDER BY 1,2,3;
+- Revenue & Sales
 
-## -- Find the date of the first and last order --
+Total sales revenue, total quantity sold, and average selling price
 
-SELECT 
-MIN(order_date) AS first_order_date,
-MAX(order_date) AS last_order_date,
- TIMESTAMPDIFF(year,MIN(order_date),MAX(order_date))
-FROM fact_sales;
+Revenue distribution across products, categories, and customers
 
-## -- Find the youngest and oldest customer --
-SELECT MIN(birthdate) AS youngest_customer,
-MAX(birthdate) AS oldest_customer
-FROM dim_customers;
+Identification of the top 5 products generating the highest revenue and underperforming products
 
-## -- find the total sales
-SELECT SUM(sales_amount)
-FROM fact_sales;
+- Customer Analysis
 
-## -- find how many category are sold
-SELECT COUNT(*) category 
-FROM dim_products;
+Customer distribution by country and gender
 
-## -- find how many products are sold
-SELECT SUM(quantity) 
-FROM fact_sales;
+Revenue contribution per customer to identify high-value segments
 
-## -- find the average selling price
-SELECT AVG(price) 
-FROM fact_sales;
+Age demographics for targeted marketing strategies
 
-## -- find the total number of orders
-SELECT COUNT(order_number)
-FROM fact_sales;
+- Product & Category Performance
 
-SELECT COUNT(DISTINCT order_number)
-FROM fact_sales;
+Total products sold per category and revenue per category
 
-## -- find the total number of customers that placed an order
-SELECT COUNT(customer_key)
-FROM dim_customers;
+Average product cost vs. selling price to evaluate profitability
 
-SELECT COUNT(DISTINCT customer_key)
-FROM dim_customers;
+Insights into category-level performance trends for inventory planning
 
-## -- Generate a report that shows all key metrics
-SELECT 'Total Sales' AS measure_name, SUM(sales_amount) AS measure_value FROM fact_sales
- UNION ALL
-SELECT 'Total Category' AS measure_name, COUNT(category) AS measure_value FROM dim_products
-UNION ALL
-SELECT 'Total Quantity' AS measure_name, SUM(quantity) AS measure_value FROM fact_sales
-UNION ALL 
-SELECT 'Total Price' AS measure_name, AVG(price) AS measure_value FROM fact_sales
-UNION ALL
-SELECT 'Total Order' AS measure_name, COUNT( DISTINCT order_number) AS measure_value FROM fact_sales
-UNION ALL
-SELECT 'Total NO Customers' AS measure_value, COUNT(customer_key) AS measure_name FROM dim_customers;
+Example Insight:
 
-## -- find the total customer by country
-SELECT country, COUNT(customer_key) AS total_customer
-FROM dim_customers
-GROUP BY country
-ORDER BY total_customer DESC;
+The top 5 products generate over 60% of total revenue, highlighting critical revenue drivers. Customers in Country X contribute the highest sales, revealing a key market segment for targeted campaigns.
 
-## -- find the total customer by gender
-SELECT gender, COUNT(customer_key) AS total_customer
-FROM dim_customers
-GROUP BY gender
-ORDER BY total_customer DESC;
-
-## -- find total products by category
-SELECT category, COUNT(product_key) AS total_product
-FROM dim_products
-GROUP BY category
-ORDER BY total_product DESC;
-
-## -- what is the average cost in each category
-SELECT category, AVG(cost) AS average_cost
-FROM dim_products
-GROUP BY category
-ORDER BY average_cost DESC;
-
-## -- what is the total revenue generated for each category
-SELECT 
-p.category,
-SUM(f.sales_amount) total_revenue 
-FROM fact_sales f
-LEFT JOIN dim_products p
-ON
-p.product_key = f.product_key
-GROUP BY p.category
-ORDER BY total_revenue DESC;
-
-
-## -- what is the total revenue generated for each customer
-SELECT 
-c.customer_key,
-c.first_name,
-c.last_name,
-SUM(f.sales_amount) total_revenue 
-FROM fact_sales f
-LEFT JOIN dim_customers c
-ON 
-c.customer_key = f.customer_key
-GROUP BY 
-c.customer_key,
-c.first_name,
-c.last_name
-ORDER BY total_revenue DESC;
-
-## -- What is the distribution of sold items access countries 
-SELECT 
-c.country,
-COUNT(f.order_number) total_distribution
-FROM dim_customers c
-LEFT JOIN fact_sales f
-ON
-c.customer_key = f.customer_key
-LEFT JOIN dim_products p
-ON
-p.product_key = f.product_key
-GROUP BY c.country
-ORDER BY total_distribution DESC;
-
-## -- which 5 products generate the top revenue 
-SELECT
-p.product_name,
-SUM(f.sales_amount) total_revenue 
-FROM fact_sales f
-LEFT JOIN dim_products p
-ON
-p.product_key = f.product_key
-GROUP BY p.product_name
-ORDER BY total_revenue DESC
-LIMIT 5;
-
-## -- which 5 products generate the lowest revenue
-SELECT *
-FROM (
-SELECT
-p.product_name,
-SUM(f.sales_amount) total_revenue,
-ROW_NUMBER() OVER(ORDER BY SUM(f.sales_amount)) AS rank_products 
-FROM fact_sales f
-LEFT JOIN dim_products p
-ON
-p.product_key = f.product_key
-GROUP BY p.product_name) a
-WHERE rank_products  >= 5;
